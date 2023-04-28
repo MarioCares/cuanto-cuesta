@@ -1,36 +1,33 @@
-import ContentHeader from "../Visual/ContentHeader.jsx";
-import { Button, Form } from "react-bulma-components";
 import { useEffect, useState } from "react";
-import useCreateProduct from "./hooks/useCreateProduct.jsx";
-import LoaderSpinner from "../Visual/LoaderSpinner.jsx";
-import { useNavigate } from "react-router-dom";
+import useCreateProduct from "../hooks/useCreateProduct";
+import { useAuth } from "../../../context/AuthContext";
+import { Button, Form } from "react-bulma-components";
+import LoaderSpinner from "../../Visual/LoaderSpinner";
+import AlertDialog, {
+  AlertDialogInitialValues,
+} from "../../Visual/AlertDialog.jsx";
 
 const Create = () => {
-  const breadcrumbs = [
-    {
-      text: "Cuanto Cuesta",
-      linkTo: "/",
-    },
-    {
-      text: "Productos",
-      linkTo: "/products",
-    },
-    {
-      text: "Creación",
-      linkTo: "",
-    },
-  ];
   const [productName, setProductName] = useState("");
-  const navigate = useNavigate();
+  const [alertData, setAlertData] = useState(AlertDialogInitialValues);
+  const [showAlert, setShowAlert] = useState(false);
   const [callCreateProduct, loading, status] = useCreateProduct();
+  const { user } = useAuth();
 
   useEffect(() => {
-    if (status === "ok") navigate("/products");
-  }, [navigate, status]);
+    if (status === "ok") {
+      setAlertData({
+        message: "Producto Creado!",
+        color: "success",
+        title: "",
+      });
+      setShowAlert(true);
+    }
+  }, [status]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    callCreateProduct({ productName });
+    callCreateProduct({ productName, userId: user.uid });
   };
 
   const handleChange = ({ target: { value } }) => {
@@ -47,8 +44,7 @@ const Create = () => {
 
   return (
     <>
-      <ContentHeader breadcrumbs={breadcrumbs} />
-      <hr />
+      <AlertDialog data={alertData} isOpen={showAlert} />
       <form onSubmit={handleSubmit}>
         <Form.Field>
           <Form.Label>Nombre Producto</Form.Label>

@@ -1,4 +1,3 @@
-import List, { loader as listLoader } from "./List";
-import Create from "./Create";
+import List from "./List";
 
-export { List, Create, listLoader };
+export { List };

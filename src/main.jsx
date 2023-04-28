@@ -12,7 +12,7 @@ import Root from "./components/Layout/Root.jsx";
 import MainContent from "./components/Layout/MainContent.jsx";
 import { Login, Register } from "./components/Users/index.js";
 import PrivateOutlet from "./components/PrivateOutlet.jsx";
-import { List, listLoader, Create } from "./components/Products/index.js";
+import { List } from "./components/Products/index.js";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -21,8 +21,8 @@ const router = createBrowserRouter(
         <Route errorElement={<h1>Error!</h1>} />
         <Route index element={<MainContent />} />
         <Route path="/products" element={<PrivateOutlet />}>
-          <Route path="" element={<List />} loader={listLoader} />
-          <Route path="/products/create" element={<Create />} />
+          <Route path="" element={<List />} />
+          <Route path="/products/values" element={<h1>Valores</h1>} />
         </Route>
       </Route>
       <Route path="/users">
